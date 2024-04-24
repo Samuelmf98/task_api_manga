@@ -1,0 +1,10 @@
+fastapi 
+uvicorn 
+requests 
+PyPDF2
+pillow 
+fpdf 
+bs4 
+selenium
+webdriver_manager
+reportlab
