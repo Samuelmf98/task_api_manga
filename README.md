@@ -8,8 +8,15 @@ Asegúrate de tener instalado Google Chrome en tu sistema. Si estás usando un e
 
 ```bash
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo apt install ./google-chrome-stable_current_amd64.deb
+sudo apt install ./google-chrome-stable_current_amd64.deb' 
+```
+## Creación del Entorno Virtual
 
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+Crear un entorno virtual en Python te permite gestionar las dependencias del proyecto de forma aislada. Esto es especialmente útil para evitar conflictos entre las bibliotecas requeridas por diferentes proyectos. Aquí te explicamos cómo crear y activar un entorno virtual:
+
+1. **Crear el entorno virtual**:
+   Ejecuta el siguiente comando en tu terminal. Esto creará un nuevo directorio `venv` en tu proyecto, donde se almacenarán las dependencias.
+
+```bash
+   python3 -m venv venv
+   ```

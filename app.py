@@ -17,7 +17,7 @@ import uvicorn
 app = FastAPI()
 
 # Configurar el PDF
-pdf_path = "/home/samuelmf98/task_api_manga/frieren.pdf"
+pdf_path = "/home/samuelmf98/task_api_manga/mangas.pdf"
 c = canvas.Canvas(pdf_path, pagesize=A4)
 width, height = A4  # A4 size
 
