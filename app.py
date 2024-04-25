@@ -1,3 +1,4 @@
+#Este Script solamente utiliza la pagina web manhwaweb. 
 from fastapi import FastAPI
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -21,15 +22,15 @@ pdf_path = "/home/samuelmf98/task_api_manga/mangas.pdf"
 c = canvas.Canvas(pdf_path, pagesize=A4)
 width, height = A4  # A4 size
 
-@app.get("/generar_pdf/{num_capitulos}")
-async def generar_pdf(num_capitulos: int):
+@app.get("/generar_pdf/")
+async def generar_pdf(capitulo_inicio: int, capitulo_final: int):
     # Configure PDF saving for each chapter
     c = canvas.Canvas(pdf_path, pagesize=A4)
     width, height = A4  # A4 size
 
-    for i in range(1, num_capitulos + 1):
+    for i in range(capitulo_inicio, capitulo_final + 1):
         try:
-            url = f"https://manhwaweb.com/leer/one-piece_1695365223767-{i}"
+            url = f"https://manhwaweb.com/leer/sousou-no-frieren_1696233652704-{i}"
             # Configurar el servicio del driver de Chrome y las opciones del navegador
             print("Configurando el navegador...")
             options = Options()
