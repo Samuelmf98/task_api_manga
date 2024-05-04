@@ -16,6 +16,7 @@ app = FastAPI()
 
 @app.get("/generar_pdf/")
 async def generar_pdf(capitulo_inicio: int, capitulo_final: int, nombre_manga: str): 
+    session = requests_retry_session()
 
     url_original= buscar_primer_capitulo(nombre_manga) #Extraemos la URL original utilizando el nombre del manga que el usuario introduce.
     print("Esta es la URL original:")
@@ -29,8 +30,12 @@ async def generar_pdf(capitulo_inicio: int, capitulo_final: int, nombre_manga: s
     width, height = A4  # A4 size
     c = canvas.Canvas(pdf_path, pagesize=A4)
 
+    # Factor de escala para las imágenes (0.75 significa 75% del tamaño original)
+    scale_factor = 0.75
+
     for capitulo in range(capitulo_inicio, capitulo_final + 1):
         pagina = 1
+        imagenes_encontradas = False  # Indicador de si se han encontrado imágenes
         while True:  # Iteramos indefinidamente hasta que no haya más páginas
        
             try:
@@ -38,11 +43,12 @@ async def generar_pdf(capitulo_inicio: int, capitulo_final: int, nombre_manga: s
                 image_urls = fetch_chapter_images(url,capitulo)
                 
 
-                if not image_urls: 
-                    print("No se han encontrado imágenes del capitulo {}".format(capitulo)) # Si no hay imágenes en la página, salimos del bucle
+                if not image_urls:
+                    if not imagenes_encontradas:  # Solo imprime el mensaje si es el primer intento
+                        print("No se han encontrado imágenes del capitulo {}".format(capitulo))
                     break
 
-                session = requests_retry_session()
+                imagenes_encontradas = True 
                 for image_url in image_urls:
                     print("Descargando imagen {} del capitulo {}".format((image_url), (capitulo)))
                     response = session.get(image_url)
@@ -52,7 +58,14 @@ async def generar_pdf(capitulo_inicio: int, capitulo_final: int, nombre_manga: s
 
                         if image.mode == 'RGBA':
                             image = image.convert('RGB')
-                        image_width = width
+                        
+                         # Convertir de WEBP a JPEG en memoria
+                        image_bytes_io = BytesIO()
+                        image.save(image_bytes_io, format='JPEG')
+                        image_bytes_io.seek(0)
+                        image = Image.open(image_bytes_io)
+                        
+                        image_width = width * scale_factor
                         image_height = int(image_width * (image.size[1] / image.size[0]))
                         c.drawInlineImage(image, 0, height - image_height, image_width, image_height)
                         c.showPage()
