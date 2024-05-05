@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import BackgroundTasks, FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from io import BytesIO
 from PIL import Image
@@ -10,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import aiohttp
 import asyncio
 import os
+import time
 
 from extraer_url import buscar_primer_capitulo
 from generar_pdf import fetch_chapter_images
@@ -29,11 +30,22 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  #// Permitir todos los orígenes para desarrollo
     allow_methods=["*"],  #// Permitir todos los métodos
+    allow_credentials=True, 
     allow_headers=["*"],  #// Permitir todos los headers
 )
 
+def remove_file_later(path: str):
+    """ Espera un tiempo antes de intentar eliminar el archivo, asegurando que la respuesta ha sido completamente enviada. """
+    time.sleep(10)  # Espera 10 segundos antes de eliminar el archivo
+    if os.path.exists(path):
+        os.remove(path)
+        print(f"Archivo {path} eliminado correctamente.")
+    else:
+        print(f"Archivo {path} no encontrado para eliminar.")
+
+
 @app.post("/generar_pdf/")
-async def generar_pdf(request: PdfRequest): 
+async def generar_pdf(request: PdfRequest, background_tasks: BackgroundTasks): 
      async with await aiohttp_retry_session() as session:
         url_original = buscar_primer_capitulo(request.nombre_manga)
         original_manga_name = extract_manga_name(url_original)
@@ -72,6 +84,9 @@ async def generar_pdf(request: PdfRequest):
                     c.showPage()
 
                 pagina += 1
+
+                # Agrega la tarea de eliminación del archivo en segundo plano
+        background_tasks.add_task(remove_file_later, pdf_path)
 
         c.save()
         print(f"PDF guardado en {pdf_path}")
