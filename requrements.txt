@@ -9,3 +9,4 @@ selenium
 webdriver_manager
 reportlab
 googlesearch-python
+aiohttp-retry

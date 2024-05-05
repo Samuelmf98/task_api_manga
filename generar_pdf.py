@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 
-def fetch_chapter_images(url,capitulo_numero):
+async def fetch_chapter_images(url,capitulo_numero):
     #print("Configurando el navegador...")
     options = Options()
     options.add_argument("--headless")

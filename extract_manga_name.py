@@ -22,7 +22,5 @@ def extract_manga_name(url):
         return None  # O podrías manejarlo de otra manera dependiendo de tus necesidades
 
     return manga_name
-object1 = 'https://visortmo.ws/manga/one-piece'
-extract_manga_name(object1)
 
     
