@@ -48,3 +48,11 @@ En esta página seleccionamos *Try it out* y acto seguido rellenamos los campos 
 *capitulo_final:* 45
 
 Finalmente seleecionamos *Execute* y veremos en la terminal cómo automáticamente se descagran las imágenes de cada capítulo para añadirlos a un pdf, el cual al finalizar el proceso estará disponible en la localización especificada.
+
+```
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+```
+python -m http.server 8001
+python3 app.py 
+
+ngrok start --all --config ngrok.yml
