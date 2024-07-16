@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descarga de Capítulos de Manga</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Manga Mango</h1>
+        <p>Descarga capítulos de tu manga favorito, seleccionando desde qué capítulo a qué capítulo deseas descargar.</p>
+        <p><strong>Nota:</strong> Cuantos más capítulos selecciones, más tiempo podría tardar la descarga.</p>
+    </header>
+    <main>
+        <form id="pdfForm">
+            <label for="capituloInicio">Capítulo inicio:</label>
+            <input type="number" id="capituloInicio" name="capituloInicio" required>
+            
+            <label for="capituloFinal">Capítulo final:</label>
+            <input type="number" id="capituloFinal" name="capituloFinal" required>
+            
+            <label for="nombreManga">Nombre del Manga:</label>
+            <input type="text" id="nombreManga" name="nombreManga" required>
+            
+            <button type="submit">Generar PDF</button>
+        </form>
+    </main>
+
+    <script>
+        let isProcessing = false;
+
+        document.getElementById('pdfForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submit
+            if (isProcessing) {
+                console.log("Proceso ya en curso.");
+                return;
+            }
+            isProcessing = true;
+
+            // Obtener los valores del formulario
+            const capituloInicio = document.getElementById('capituloInicio').value;
+            const capituloFinal = document.getElementById('capituloFinal').value;
+            const nombreManga = document.getElementById('nombreManga').value;
+            
+            // Obtener el botón de envío y deshabilitarlo
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Generando PDF...'; // Opcional: cambiar el texto del botón
+
+            // Realizar la solicitud fetch
+            fetch('http://localhost:8000/generar_pdf/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    capitulo_inicio: capituloInicio,
+                    capitulo_final: capituloFinal,
+                    nombre_manga: nombreManga
+                })
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "manga_" + nombreManga + "_capitulos_" + capituloInicio + "_a_" + capituloFinal + ".pdf";
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+                alert('PDF generado y descargado con éxito!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al generar el PDF.');
+            })
+            .finally(() => {
+                isProcessing = false;
+                submitButton.disabled = false;
+                submitButton.textContent = 'Generar PDF';
+            });
+        });
+    </script>
+</body>
+</html>

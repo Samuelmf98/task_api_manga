@@ -1,0 +1,10 @@
+authtoken: 2g1XGrALfi4f7ENzpvTGrQ0fOEU_2xEfVJmzjiFWjqXMSMF8T
+
+version: 2
+tunnels:
+  backend:
+    addr: 8000  # El puerto donde tu backend está corriendo
+    proto: http  # Protocolo HTTP
+  frontend:
+    addr: 8001  # El puerto donde tu frontend está corriendo
+    proto: http  # Protocolo HTTP
