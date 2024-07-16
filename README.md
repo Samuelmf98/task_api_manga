@@ -24,12 +24,12 @@ Crear un entorno virtual en Python te permite gestionar las dependencias del pro
 2. **Iniciar el entorno virtual**:
    Ejecutar el comando:
    
-   ``bash
+   ```bash
    source venv/bin/activate
    ```
 2. **Instalar las librerias necesarias**:
    Ejecutar el comando:
 
-    ``bash
+    ```bash
    pip install -r requirements.txt
    ```
