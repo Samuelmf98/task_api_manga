@@ -20,3 +20,9 @@ Crear un entorno virtual en Python te permite gestionar las dependencias del pro
 ```bash
    python3 -m venv venv
    ```
+
+2. **Iniciar el entorno virtual**:
+   Ejecutar el comando
+   ``bash
+   source venv/bin/activate
+   ```
