@@ -31,28 +31,4 @@ Crear un entorno virtual en Python te permite gestionar las dependencias del pro
 
 ## Ejecución del programa
 
-Para usar el programa ejecutamos el siguiente código:
-```bash
-   python3 app.py
-   ```
-Axto seguido accedemos al navegador web y entramos en la siguiente url:
-
-http://localhost:8000/docs
-
-En esta página seleccionamos *Try it out* y acto seguido rellenamos los campos especificados. Por ejemplo, si quieres leer el manga One Piece del capítulo 30 al 45, deberás rellenar los 3 campos de la siguiente forma:
-
-*nombre_manga:* One piece
-
-*capitulo_inicio:* 30
-
-*capitulo_final:* 45
-
-Finalmente seleecionamos *Execute* y veremos en la terminal cómo automáticamente se descagran las imágenes de cada capítulo para añadirlos a un pdf, el cual al finalizar el proceso estará disponible en la localización especificada.
-
-```
-<link rel="icon" href="favicon.ico" type="image/x-icon">
-```
-python -m http.server 8001
-python3 app.py 
-
-ngrok start --all --config ngrok.yml
+El programa aun no esta preparado para ejecutarse fuera del localhost.
